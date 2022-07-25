@@ -4,20 +4,17 @@ import Table from "./dataTable/table"
 import img from "./assets/icons8-refresh-30.png";
 
 function App() {
-  const users = [
-    { id: 1, userName: "User1" },
-    { id: 2, userName: "User2" },
-    { id: 3, userName: "User3" },
-    { id: 4, userName: "User4" },
-    { id: 5, userName: "User5" },
-    { id: 6, userName: "User6" },
-    { id: 7, userName: "User7" },
-    { id: 8, userName: "User8" },
-    { id: 9, userName: "User9" }
-  ];
   const [selectedClient, setSelectedClient] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
+  function getUser(){
+    const url = "https://jsonplaceholder.typicode.com/users";
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => setUsers(json))
+      .catch((error) => console.log(error));
+  }
   function handleSelectChange(event) {
     setSelectedClient(event.target.value);
     loadData(event.target.value);
@@ -41,6 +38,7 @@ function App() {
       .catch((error) => console.log(error));
   }
   useEffect(() => {
+    getUser();
     loadData("");
   }, []);
   useEffect(() => {
@@ -61,7 +59,7 @@ function App() {
               select User
             </option>
             {users.map((e) => (
-              <option value={e.id}>{e.userName}</option>
+              <option value={e.id}>{e.username}</option>
             ))}
           </select>
         </span>
